@@ -8,22 +8,43 @@ import Results from "./Components/Results";
 import Form from "./Components/Form";
 
 const App = () => {
+  const [loading, setLoading] = useState(false);
   const [ applicationState, setApplicationState] = useState({
     data: null,
     requestParams: {},
   });
 
-  const callApi = () => {
-    // mock output
-    const newData = {
-      count: 2,
-      results: [
-        { name: "fake thing 1", url: "http://fakethings.com/1" },
-        { name: "fake thing 2", url: "http://fakethings.com/2" },
-      ],
-    };
-    setApplicationState({ ...applicationState, data: newData });
+  const callApi = async (formData) => {
+    setLoading(true)
+
+    try {
+      const response = await fetch(formData.url, {
+        method: formData.method,
+        body: formData.method === "GET" ? null : formData.requestBody,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      
+      const data = await response.json();
+      setApplicationState({data, requestParams: formData});
+    } catch (error) {
+      console.error("Error", error);
+    } finally {
+      setLoading(false);
+    }
   }
+
+    // mock output
+    // const newData = {
+    //   count: 2,
+    //   results: [
+    //     { name: "fake thing 1", url: "http://fakethings.com/1" },
+    //     { name: "fake thing 2", url: "http://fakethings.com/2" },
+    //   ],
+    // };
+    // // console.log({ ...applicationState, data: newData, ...formData })
+    // setApplicationState({ ...applicationState, data: newData, requestParams: formData });
 
   return (
     // <React.Fragment>
@@ -32,7 +53,7 @@ const App = () => {
       <div>Request Method: {applicationState.requestParams.method}</div>
       <div>URL: {applicationState.requestParams.url}</div>
       <Form handleApiCall={callApi} />
-      <Results data={applicationState.data} />
+      <Results loading={loading} data={applicationState.data} />
       <Footer />
     </>
     //  </React.Fragment>
