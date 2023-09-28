@@ -1,29 +1,108 @@
-// import React from "react";
-import "./Form.scss";
+import { useState } from 'react';
+import './Form.scss';
 
 const Form = (props) => {
-  function handleSubmit() {
-    preventDefault();
-    const formData = {
-      method: "GET",
-      url: "https://pokeapi.co/api/v2/pokemon",
-    };
-    props.handleApiCall(formData);
-  }
+  const [formData, setFormData] = useState({
+    method: 'GET',
+    url: '',
+    requestBody: '',
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleMethodChange = (method) => {
+    setFormData({
+      ...formData,
+      method: method,
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(formData.url, {
+        method: formData.method,
+        body: formData.method === 'GET' ? null : formData.requestBody,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const responseData = await response
+
+      props.handleApiCall(responseData);
+    } catch (error) {
+      console.error('Error', error);
+    }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  };
   return (
     <>
       <form onSubmit={handleSubmit}>
         <label>
           <span>URL: </span>
-          <input name="url" type="text" />
+          <input
+            name="url"
+            type="text"
+            value={formData.url}
+            onChange={handleClick}
+          />
           <button type="submit">GO!</button>
         </label>
         <label className="methods">
-          <span id="get">GET</span>
-          <span id="post">POST</span>
-          <span id="put">PUT</span>
-          <span id="delete">DELETE</span>
+          <span
+            id="get"
+            className={formData.method === 'GET' ? 'active' : ''}
+            onClick={() => handleMethodChange('GET')}
+          >
+            GET
+          </span>
+          <span
+            id="post"
+            className={formData.method === 'POST' ? 'active' : ''}
+            onClick={() => handleMethodChange('POST')}
+          >
+            POST
+          </span>
+          <span
+            id="put"
+            className={formData.method === 'PUT' ? 'active' : ''}
+            onClick={() => handleMethodChange('PUT')}
+          >
+            PUT
+          </span>
+          <span
+            id="delete"
+            className={formData.method === 'DELETE' ? 'active' : ''}
+            onClick={() => handleMethodChange('DELETE')}
+          >
+            DELETE
+          </span>
         </label>
+        <label>
+          <span>Request Body (JSON):</span>
+          <textarea
+            name="requestBody"
+            value={formData.requestBody}
+            onChange={handleClick}
+            rows={4}
+          />
+        </label>
+        {/* Display loading status */}
+        {isLoading && <p>Loading...</p>}
       </form>
     </>
   );

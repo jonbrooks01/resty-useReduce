@@ -1,17 +1,14 @@
 // import React from 'react'
 
-const Results = (props) => {
+const Results = ({ loading, data }) => {
   return (
-    <section>
-    <pre>{props.data ? JSON.stringify(props.data, undefined, 2) : null}</pre>
-  </section>
-  )
-}
+    <section className="results">
+      {loading ? <p>Loading...</p> : <pre>{JSON.stringify(data, null, 2)}</pre>}
+    </section>
+  );
+};
 
-export default Results
-
-
-
+export default Results;
 
 // import React from 'react';
 
