@@ -1,50 +1,49 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import "./App.scss";
+import './App.scss';
 
-import Footer from "./Components/Footer";
-import Header from "./Components/Header";
-import Results from "./Components/Results";
-import Form from "./Components/Form";
+import Footer from './Components/Footer';
+import Header from './Components/Header';
+import Results from './Components/Results';
+import Form from './Components/Form';
 
 const App = () => {
   const [loading, setLoading] = useState(false);
-  const [ applicationState, setApplicationState] = useState({
+  const [applicationState, setApplicationState] = useState({
     data: null,
     requestParams: {},
   });
 
   const callApi = async (formData) => {
-    setLoading(true)
+    setLoading(true);
 
     try {
       const response = await fetch(formData.url, {
         method: formData.method,
-        body: formData.method === "GET" ? null : formData.requestBody,
+        body: formData.method === 'GET' ? null : formData.requestBody,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-      })
-      
-      const data = await response.json();
-      setApplicationState({data, requestParams: formData});
-    } catch (error) {
-      console.error("Error", error);
-    } finally {
-      setLoading(false);
-    }
-  }
+      });
 
-    // mock output
-    // const newData = {
-    //   count: 2,
-    //   results: [
-    //     { name: "fake thing 1", url: "http://fakethings.com/1" },
-    //     { name: "fake thing 2", url: "http://fakethings.com/2" },
-    //   ],
-    // };
-    // // console.log({ ...applicationState, data: newData, ...formData })
-    // setApplicationState({ ...applicationState, data: newData, requestParams: formData });
+      const data = await response.json();
+      setApplicationState({ data, requestParams: formData });
+    } catch (error) {
+      console.error('Error', error);
+    }
+    setLoading(false);
+  };
+
+  // mock output
+  // const newData = {
+  //   count: 2,
+  //   results: [
+  //     { name: "fake thing 1", url: "http://fakethings.com/1" },
+  //     { name: "fake thing 2", url: "http://fakethings.com/2" },
+  //   ],
+  // };
+  // // console.log({ ...applicationState, data: newData, ...formData })
+  // setApplicationState({ ...applicationState, data: newData, requestParams: formData });
 
   return (
     // <React.Fragment>

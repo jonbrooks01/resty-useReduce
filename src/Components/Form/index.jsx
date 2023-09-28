@@ -1,11 +1,11 @@
-import { useState } from "react";
-import "./Form.scss";
+import { useState } from 'react';
+import './Form.scss';
 
 const Form = (props) => {
   const [formData, setFormData] = useState({
-    method: "GET",
-    url: "",
-    requestBody: "",
+    method: 'GET',
+    url: '',
+    requestBody: '',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -33,22 +33,21 @@ const Form = (props) => {
     try {
       const response = await fetch(formData.url, {
         method: formData.method,
-        body: formData.method === "GET" ? null : formData.requestBody,
+        body: formData.method === 'GET' ? null : formData.requestBody,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
 
-      const responseData = await response.json();
+      const responseData = await response
 
-      props.callApi(responseData);
+      props.handleApiCall(responseData);
     } catch (error) {
-      console.error("Error", error);
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
+      console.error('Error', error);
     }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
   return (
     <>
@@ -66,29 +65,29 @@ const Form = (props) => {
         <label className="methods">
           <span
             id="get"
-            className={formData.method === "GET" ? "active" : ""}
-            onClick={() => handleMethodChange("GET")}
+            className={formData.method === 'GET' ? 'active' : ''}
+            onClick={() => handleMethodChange('GET')}
           >
             GET
           </span>
           <span
             id="post"
-            className={formData.method === "POST" ? "active" : ""}
-            onClick={() => handleMethodChange("POST")}
+            className={formData.method === 'POST' ? 'active' : ''}
+            onClick={() => handleMethodChange('POST')}
           >
             POST
           </span>
           <span
             id="put"
-            className={formData.method === "PUT" ? "active" : ""}
-            onClick={() => handleMethodChange("PUT")}
+            className={formData.method === 'PUT' ? 'active' : ''}
+            onClick={() => handleMethodChange('PUT')}
           >
             PUT
           </span>
           <span
             id="delete"
-            className={formData.method === "DELETE" ? "active" : ""}
-            onClick={() => handleMethodChange("DELETE")}
+            className={formData.method === 'DELETE' ? 'active' : ''}
+            onClick={() => handleMethodChange('DELETE')}
           >
             DELETE
           </span>
