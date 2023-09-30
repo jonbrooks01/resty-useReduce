@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import './App.scss';
+// import './App.scss';
 
 import Footer from './Components/Footer';
 import Header from './Components/Header';
@@ -14,36 +14,34 @@ const App = () => {
     requestParams: {},
   });
 
-  const callApi = async (formData) => {
-    setLoading(true);
+  
+  useEffect(() => {
+    if(!applicationState.requestParams.url || applicationState.data && Object.keys(applicationState.data).length) return;
+    console.log(applicationState.requestParams);
+    const callApi = async () => {
+      setLoading(true);
+  
+      try {
+        const response = await fetch(applicationState.requestParams.url, {
+          method: applicationState.requestParams.method,
+          body: applicationState.requestParams.method === 'GET' ? null : applicationState.requestParams.requestBody,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        const data = await response.json();
+        setApplicationState((prevState) => ({ ...prevState, data }));
+      } catch (error) {
+        console.error('Error', error);
+      }
+      setLoading(false);
+    };
+      callApi();
+  }, [applicationState.requestParams]);
 
-    try {
-      const response = await fetch(formData.url, {
-        method: formData.method,
-        body: formData.method === 'GET' ? null : formData.requestBody,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
 
-      const data = await response.json();
-      setApplicationState({ data, requestParams: formData });
-    } catch (error) {
-      console.error('Error', error);
-    }
-    setLoading(false);
-  };
-
-  // mock output
-  // const newData = {
-  //   count: 2,
-  //   results: [
-  //     { name: "fake thing 1", url: "http://fakethings.com/1" },
-  //     { name: "fake thing 2", url: "http://fakethings.com/2" },
-  //   ],
-  // };
-  // // console.log({ ...applicationState, data: newData, ...formData })
-  // setApplicationState({ ...applicationState, data: newData, requestParams: formData });
+ 
 
   return (
     // <React.Fragment>
@@ -51,7 +49,8 @@ const App = () => {
       <Header />
       <div>Request Method: {applicationState.requestParams.method}</div>
       <div>URL: {applicationState.requestParams.url}</div>
-      <Form handleApiCall={callApi} />
+      <Form setApplicationState ={setApplicationState}
+        applicationState={applicationState} />
       <Results loading={loading} data={applicationState.data} />
       <Footer />
     </>
