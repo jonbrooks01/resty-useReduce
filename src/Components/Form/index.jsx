@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import './Form.scss';
+// import './Form.scss';
 
-const Form = (props) => {
+const Form = ({applicationState, setApplicationState}) => {
   const [formData, setFormData] = useState({
     method: 'GET',
     url: '',
@@ -27,24 +27,24 @@ const Form = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setApplicationState({...applicationState, requestParams:formData})
     setIsLoading(true);
 
-    try {
-      const response = await fetch(formData.url, {
-        method: formData.method,
-        body: formData.method === 'GET' ? null : formData.requestBody,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    // try {
+    //   const response = await fetch(formData.url, {
+    //     method: formData.method,
+    //     body: formData.method === 'GET' ? null : formData.requestBody,
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   });
 
-      const responseData = await response
+    //   const responseData = await response
 
-      props.handleApiCall(responseData);
-    } catch (error) {
-      console.error('Error', error);
-    }
+    //   props.handleApiCall(responseData);
+    // } catch (error) {
+    //   console.error('Error', error);
+    // }
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -58,9 +58,11 @@ const Form = (props) => {
             name="url"
             type="text"
             value={formData.url}
+            placeholder="URL: "
+            data-testid="formInput"  
             onChange={handleClick}
           />
-          <button type="submit">GO!</button>
+          <button data-testid="goButton" type="submit">GO!</button>
         </label>
         <label className="methods">
           <span
