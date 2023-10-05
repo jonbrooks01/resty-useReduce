@@ -1,13 +1,13 @@
 # React + Vite
 
-LAB - 28
-RESTy running live with requests
+LAB - 29
+RESTy useReducer
 
 enables an active site that will get api information from a live API instead of hardcoding information.
 
 Author: Jonathan Brooks
 
-[Pull Request](https://github.com/jonbrooks01/resty/pull/5)
+[Pull Request](https://github.com/jonbrooks01/resty-useReduce/pull/1)
 
 <!-- [deployed server](https://basic-server-4efy.onrender.com) -->
 
