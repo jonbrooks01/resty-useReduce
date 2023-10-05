@@ -1,5 +1,35 @@
 # React + Vite
 
+LAB - 28
+RESTy running live with requests
+
+enables an active site that will get api information from a live API instead of hardcoding information.
+
+Author: Jonathan Brooks
+
+[Pull Request](https://github.com/jonbrooks01/resty/pull/5)
+
+<!-- [deployed server](https://basic-server-4efy.onrender.com) -->
+
+Setup
+<!-- .env requirements:PORT - 3001 -->
+
+Running the app: npm run dev
+
+Endpoint: Returns Object
+
+<!-- {
+  "domain": "deployment-practice-main.onrender.com/",
+  "status": "{name: name}",
+ "port":
+} -->
+Tests
+Unit Tests: npm run test
+<!-- Lint Tests: npm run lint -->
+
+<!-- UML:
+![UML](./UML.png) -->
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
