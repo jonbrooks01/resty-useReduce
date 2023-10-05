@@ -1,44 +1,69 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 
-// import './App.scss';
+import './App.scss';
 
 import Footer from './Components/Footer';
 import Header from './Components/Header';
 import Results from './Components/Results';
 import Form from './Components/Form';
+import History from './Components/History';
+
+const initialState = {
+  loading: false,
+  data: null,
+  requestParams: {},
+  history: []
+};
+
+const appReducer = (state, action) => {
+  switch(action.type) {
+    case 'START_LOADING':
+      return { ...state, loading: true };
+    case 'END_LOADING':
+      return { ...state, loading: false};
+    case 'SET_DATA':
+      return { ...state, data: action.payload };
+    case 'SET_REQUEST_PARAMS':
+      return { ...state, history: [...state.history, action.payload] };
+    case 'ADD_TO_HISTORY':
+      return { ...state, history: [...state.history, action.payload] }  
+    default:
+        return state;  
+  }
+}
+
+
 
 const App = () => {
-  const [loading, setLoading] = useState(false);
-  const [applicationState, setApplicationState] = useState({
-    data: null,
-    requestParams: {},
-  });
+  const [state, dispatch] = useReducer(appReducer, initialState);
+ 
 
   
   useEffect(() => {
-    if(!applicationState.requestParams.url || applicationState.data && Object.keys(applicationState.data).length) return;
-    console.log(applicationState.requestParams);
+    if (!state.requestParams.url || (state.data && Object.keys(state.data).length)) return;
+    
     const callApi = async () => {
-      setLoading(true);
+     dispatch({ type: 'START_LOADING' });
   
       try {
-        const response = await fetch(applicationState.requestParams.url, {
-          method: applicationState.requestParams.method,
-          body: applicationState.requestParams.method === 'GET' ? null : applicationState.requestParams.requestBody,
+        const response = await fetch(state.requestParams.url, {
+          method: state.requestParams.method,
+          body: state.requestParams.method === 'GET' ? null : state.requestParams.requestBody,
           headers: {
             'Content-Type': 'application/json',
           },
         });
   
         const data = await response.json();
-        setApplicationState((prevState) => ({ ...prevState, data }));
+       dispatch({ type: 'SET_DATA', payload: data });
+       dispatch({ type: 'ADD_TO_HISTORY', payload: { ...state.requestParams, data} });
       } catch (error) {
         console.error('Error', error);
       }
-      setLoading(false);
+      dispatch({ type: 'END_LOADING' });
     };
       callApi();
-  }, [applicationState.requestParams]);
+  }, [state.requestParams]);
 
 
  
@@ -47,11 +72,12 @@ const App = () => {
     // <React.Fragment>
     <>
       <Header />
-      <div>Request Method: {applicationState.requestParams.method}</div>
-      <div>URL: {applicationState.requestParams.url}</div>
-      <Form setApplicationState ={setApplicationState}
-        applicationState={applicationState} />
-      <Results loading={loading} data={applicationState.data} />
+      <div>Request Method: {state.requestParams.method}</div>
+      <div>URL: {state.requestParams.url}</div>
+      <Form setApplicationState ={dispatch}
+        applicationState={state} />
+      <Results loading={state.loading} data={state.data} />
+      <History history={state.history} setApplicationState={dispatch} />
       <Footer />
     </>
     //  </React.Fragment>
@@ -60,51 +86,4 @@ const App = () => {
 
 export default App;
 
-// import React from 'react';
 
-// Let's talk about using index.js and some other name in the component folder.
-// There's pros and cons for each way of doing this...
-// OFFICIALLY, we have chosen to use the Airbnb style guide naming convention.
-// Why is this source of truth beneficial when spread across a global organization?
-// import Header from './Components/Header';
-// import Footer from './Components/Footer';
-// import Form from './Components/Form';
-// import Results from './Components/Results';
-
-// class App extends React.Component {
-
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       data: null,
-//       requestParams: {},
-//     };
-//   }
-
-//   callApi = (requestParams) => {
-//     // mock output
-//     const data = {
-//       count: 2,
-//       results: [
-//         {name: 'fake thing 1', url: 'http://fakethings.com/1'},
-//         {name: 'fake thing 2', url: 'http://fakethings.com/2'},
-//       ],
-//     };
-//     this.setState({data, requestParams});
-//   }
-
-//   render() {
-//     return (
-//       <React.Fragment>
-//         <Header />
-//         <div>Request Method: {this.state.requestParams.method}</div>
-//         <div>URL: {this.state.requestParams.url}</div>
-//         <Form handleApiCall={this.callApi} />
-//         <Results data={this.state.data} />
-//         <Footer />
-//       </React.Fragment>
-//     );
-//   }
-// }
-
-// export default App;
