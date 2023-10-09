@@ -27,7 +27,8 @@ const Form = ({applicationState, setApplicationState}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setApplicationState({...applicationState, requestParams:formData})
+    setApplicationState({type: 'SET_DATA', requestParams:formData})
+    setApplicationState({ type: 'START_LOADING' });
     setIsLoading(true);
 
     // try {
