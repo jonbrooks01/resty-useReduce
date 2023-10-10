@@ -18,7 +18,7 @@ const initialState = {
 const appReducer = (state, action) => {
   console.log(action);
   if (action.type === 'START_LOADING') {
-    return { ...state, loading: true };
+    return { ...state, loading: true, data: {} };
   } else if (action.type === 'END_LOADING') {
     console.log({ ...state, loading: false });
     return { ...state, loading: false };
@@ -88,7 +88,7 @@ const App = () => {
       <div className="results">
         <Form setApplicationState={dispatch} applicationState={state} />
 
-        <Results loading={state.loading} data={state.history} />
+        <Results loading={state.loading} data={state.data} />
       </div>
 
       <Footer />

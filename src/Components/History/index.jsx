@@ -10,12 +10,15 @@ const History = ({ history, setApplicationState }) => {
   };
 
   return (
-    <div className='historyResults'>
+    <div className="historyResults">
       <h2>API Call History</h2>
       <ul>
         {history.map((entry, index) => (
           <li key={index}>
-            <button onClick={() => handleHistoryClick(entry)} className='historyButton'>
+            <button
+              onClick={() => handleHistoryClick(entry)}
+              className="historyButton"
+            >
               View Results
             </button>
             {entry.method}:{entry.url}

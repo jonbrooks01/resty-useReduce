@@ -27,25 +27,13 @@ const Form = ({ applicationState, setApplicationState }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setApplicationState({ type: 'SET_DATA', requestParams: formData });
+
+    const userData = { ...formData };
+    // setApplicationState({ type: 'ADD_TO_HISTORY', history: userData });
+    setApplicationState({ type: 'SET_DATA', requestParams: userData });
     setApplicationState({ type: 'START_LOADING' });
     setIsLoading(true);
 
-    // try {
-    //   const response = await fetch(formData.url, {
-    //     method: formData.method,
-    //     body: formData.method === 'GET' ? null : formData.requestBody,
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   });
-
-    //   const responseData = await response
-
-    //   props.handleApiCall(responseData);
-    // } catch (error) {
-    //   console.error('Error', error);
-    // }
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -75,6 +63,7 @@ const Form = ({ applicationState, setApplicationState }) => {
           >
             GET
           </span>
+
           <span
             id="post"
             className={formData.method === 'POST' ? 'active' : ''}
@@ -114,30 +103,3 @@ const Form = ({ applicationState, setApplicationState }) => {
 };
 
 export default Form;
-
-// import React from 'react';
-
-// class Form extends React.Component {
-
-//   render() {
-//     return (
-// <>
-//   <form onSubmit={this.handleSubmit}>
-//     <label >
-//       <span>URL: </span>
-//       <input name='url' type='text' />
-//       <button type="submit">GO!</button>
-//     </label>
-//     <label className="methods">
-//       <span id="get">GET</span>
-//       <span id="post">POST</span>
-//       <span id="put">PUT</span>
-//       <span id="delete">DELETE</span>
-//     </label>
-//   </form>
-// </>
-//     );
-//   }
-// }
-
-// export default Form;
