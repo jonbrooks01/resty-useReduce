@@ -80,16 +80,17 @@ const App = () => {
   return (
     <>
       <Header />
-      <div>Request Method: {state.requestParams.method}</div>
-      <div>URL: {state.requestParams.url}</div>
-      <div>
+      <span className="info">
+        <div>Request Method: {state.requestParams.method}</div>
+        <div>URL: {state.requestParams.url}</div>
+      </span>
+      <History history={state.history} setApplicationState={dispatch} />
+      <div className="results">
         <Form setApplicationState={dispatch} applicationState={state} />
 
         <Results loading={state.loading} data={state.history} />
       </div>
-      <div>
-        <History history={state.history} setApplicationState={dispatch} />
-      </div>
+
       <Footer />
     </>
   );

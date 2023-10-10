@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Form.scss';
 
-const Form = ({applicationState, setApplicationState}) => {
+const Form = ({ applicationState, setApplicationState }) => {
   const [formData, setFormData] = useState({
     method: 'GET',
     url: '',
@@ -27,7 +27,7 @@ const Form = ({applicationState, setApplicationState}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setApplicationState({type: 'SET_DATA', requestParams:formData})
+    setApplicationState({ type: 'SET_DATA', requestParams: formData });
     setApplicationState({ type: 'START_LOADING' });
     setIsLoading(true);
 
@@ -54,16 +54,18 @@ const Form = ({applicationState, setApplicationState}) => {
     <>
       <form onSubmit={handleSubmit}>
         <label>
-          <span>URL: </span>
+          <span className="url">URL: </span>
           <input
             name="url"
             type="text"
             value={formData.url}
             placeholder="URL: "
-            data-testid="formInput"  
+            data-testid="formInput"
             onChange={handleClick}
           />
-          <button data-testid="goButton" type="submit">GO!</button>
+          <button data-testid="goButton" type="submit">
+            GO!
+          </button>
         </label>
         <label className="methods">
           <span
@@ -95,8 +97,8 @@ const Form = ({applicationState, setApplicationState}) => {
             DELETE
           </span>
         </label>
-        <label>
-          <span>Request Body (JSON):</span>
+        <label className="userInput">
+          <span className="requestBody">Request Body (JSON):</span>
           <textarea
             name="requestBody"
             value={formData.requestBody}
