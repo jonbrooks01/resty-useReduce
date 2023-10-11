@@ -14,6 +14,7 @@
     "@testing-library/user-event": "^14.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-modal": "^3.16.1",
     "react-popout": "^3.0.2",
     "react-scroll-box": "^0.3.5",
     "sass": "^1.68.0",

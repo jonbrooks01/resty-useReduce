@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Popout from 'react-popout';
+import Modal from 'react-modal';
 
 const History = ({ history, setApplicationState }) => {
   const [selectedEntry, setSelectedEntry] = useState(null);
@@ -28,13 +28,11 @@ const History = ({ history, setApplicationState }) => {
 
       {/* Display selected entry information */}
       {selectedEntry && (
-        <Popout width="400" height="300">
-          <div>
-            <h3>Selected Result</h3>
+        <div className="historyList">
+          <h3>Selected Result</h3>
 
-            <pre>{JSON.stringify(selectedEntry.data.results, null, 2)}</pre>
-          </div>
-        </Popout>
+          <pre>{JSON.stringify(selectedEntry.data.results, null, 2)}</pre>
+        </div>
       )}
     </div>
   );
