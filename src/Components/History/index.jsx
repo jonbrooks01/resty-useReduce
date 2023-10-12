@@ -6,6 +6,7 @@ const History = ({ history, setApplicationState }) => {
 
   const handleHistoryClick = (entry) => {
     // Update the selected entry in the state
+    console.log(history);
     setSelectedEntry(entry);
   };
 
@@ -31,7 +32,7 @@ const History = ({ history, setApplicationState }) => {
         <div className="historyList">
           <h3>Selected Result</h3>
 
-          <pre>{JSON.stringify(selectedEntry.data.results, null, 2)}</pre>
+          <pre>{JSON.stringify(selectedEntry.data, null, 2)}</pre>
         </div>
       )}
     </div>

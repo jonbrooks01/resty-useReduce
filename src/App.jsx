@@ -73,7 +73,7 @@ const App = () => {
       }
       dispatch({ type: 'END_LOADING' });
     };
-
+    // console.log(state.data);
     callApi();
   }, [state]);
 
